@@ -7,22 +7,29 @@ class TicTacToeGUI extends JFrame {
     private JButton[][] buttons;
     private char[][] board;
     private char currentPlayer;
+    private JButton resetButton;
   
     public TicTacToeGUI() {
         setTitle("Tic Tac Toe");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(3, 3));
+        setLayout(new BorderLayout());
         setSize(500, 500);
+
+        JPanel buttonPanel = new JPanel(new GridLayout(3, 3)); 
+        add(buttonPanel, BorderLayout.CENTER);
+
+
 
         buttons = new JButton[3][3];
         board = new char[3][3]; 
 
         currentPlayer = 'X';
 
-        initializeBoard();
+        initializeBoard(buttonPanel);
+        initializeResetButton();
     }
     
-    private void initializeBoard() {
+    private void initializeBoard(JPanel buttonPanel) {
         for (int i = 0; i <= 2; i++) {
             for (int j = 0; j <= 2; j++) {
                 board[i][j] = ' ';
@@ -50,10 +57,19 @@ class TicTacToeGUI extends JFrame {
                         }
                     }
                 });
-                add(buttons[i][j]);
+                buttonPanel.add(buttons[i][j]);
             }
         }
-    }    
+    } 
+    private void initializeResetButton() {
+        resetButton = new JButton("Reset");
+        resetButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                resetBoard();
+            }
+        });
+        add(resetButton, BorderLayout.SOUTH); 
+    }  
     
     private void aiMakeMove() {
         Random r = new Random();
